@@ -1,9 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Users = require("./models/userModel");
-const Themes = require("./models/themeModel");
-const Foods = require("./models/foodModel");
-const Drinks = require("./models/drinkModel");
+const Products = require("./models/productModel");
 
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
@@ -16,16 +14,16 @@ app.use(express.urlencoded({ extended: false }));
 
 //default route
 app.get("/", (req, res) => {
-  res.send("API CATERING APP WORKING SUCCESS");
+  res.send("API SUCCESS");
 });
 
-//  theme
+//  products
 
-//add theme
-app.post("/theme", async (req, res) => {
+//add product
+app.post("/product", async (req, res) => {
   try {
-    const theme = await Themes.create(req.body);
-    res.status(200).json(theme);
+    const product = await Products.create(req.body);
+    res.status(200).json(product);
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
@@ -33,46 +31,46 @@ app.post("/theme", async (req, res) => {
 });
 
 //get all thenes
-app.get("/theme", async (req, res) => {
+app.get("/product", async (req, res) => {
   try {
-    const themes = await Themes.find({});
-    res.status(200).json(themes);
+    const products = await Products.find({});
+    res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-//search theme by category
-app.get("/theme/:category", async (req, res) => {
+//search product by category
+app.get("/product/:category", async (req, res) => {
   try {
     const { category } = req.params;
-    const theme = await Themes.find({ category: category });
+    const product = await Products.find({ category: category });
 
-    if (theme.length === 0) {
+    if (product.length === 0) {
       return res
         .status(404)
         .json({ message: "No resreved id matching records found" });
     }
 
-    res.status(200).json(theme);
+    res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-//update theme
-app.put("/theme/:id", async (req, res) => {
+//update product
+app.put("/product/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const theme = await Themes.findByIdAndUpdate(id, req.body);
+    const product = await Products.findByIdAndUpdate(id, req.body);
 
-    if (!theme) {
+    if (!product) {
       return res
         .status(404)
         .json({ message: `cannot find any Bus with ID ${id}` });
     }
-    const updatedtheme = await Themes.findById(id);
-    res.status(200).json(updatedtheme);
+    const updatedproduct = await Products.findById(id);
+    res.status(200).json(updatedproduct);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -138,133 +136,9 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// close theme
-
-// food
-
-//add food
-app.post("/food", async (req, res) => {
-  try {
-    const food = await Foods.create(req.body);
-    res.status(200).json(food);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: error.message });
-  }
-});
-
-//get all foods
-app.get("/food", async (req, res) => {
-  try {
-    const foods = await Foods.find({});
-    res.status(200).json(foods);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-//search foods by category
-app.get("/food/:category", async (req, res) => {
-  try {
-    const { category } = req.params;
-    const food = await Foods.find({ category: category });
-
-    if (food.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No resreved id matching records found" });
-    }
-
-    res.status(200).json(food);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-//update food
-app.put("/food/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const food = await Foods.findByIdAndUpdate(id, req.body);
-
-    if (!food) {
-      return res
-        .status(404)
-        .json({ message: `cannot find any Bus with ID ${id}` });
-    }
-    const updatedFood = await Foods.findById(id);
-    res.status(200).json(updatedFood);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// close food
-
-// drinks
-
-//add drinks
-app.post("/drink", async (req, res) => {
-  try {
-    const drink = await Drinks.create(req.body);
-    res.status(200).json(drink);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: error.message });
-  }
-});
-
-//get all foods
-app.get("/drink", async (req, res) => {
-  try {
-    const drinks = await Drinks.find({});
-    res.status(200).json(drinks);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-//search foods by category
-app.get("/drink/:category", async (req, res) => {
-  try {
-    const { category } = req.params;
-    const drink = await Drinks.find({ category: category });
-
-    if (drink.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No resreved id matching records found" });
-    }
-
-    res.status(200).json(drink);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-//update food
-app.put("/drink/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const drink = await Drinks.findByIdAndUpdate(id, req.body);
-
-    if (!drink) {
-      return res
-        .status(404)
-        .json({ message: `cannot find any Bus with ID ${id}` });
-    }
-    const updateddrink = await Drinks.findById(id);
-    res.status(200).json(updateddrink);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
 mongoose.set("strictQuery", false);
 mongoose
-  .connect(
-    "mongodb+srv://catering4D:catering%40123@cateringcluster.t92orr6.mongodb.net/reservation_management"
-  )
+  .connect("mongodb+srv://capstone:Capstone2@cluster0.sqm4la8.mongodb.net/POMS")
   .then(() => {
     console.log("connected to MongoDB");
     app.listen(3000, () => {
