@@ -50,10 +50,10 @@ app.get("/product", async (req, res) => {
 });
 
 //search product by category
-app.get("/product/:category", async (req, res) => {
+app.get("/product/:Name", async (req, res) => {
   try {
-    const { category } = req.params;
-    const product = await Products.find({ category: category });
+    const { Name } = req.params;
+    const product = await Products.find({ Name: Name });
 
     if (product.length === 0) {
       return res
