@@ -174,7 +174,6 @@ app.post("/loginrfid", async (req, res) => {
       firstname: user.firstname,
       lastname: user.lastname,
       email: user.email,
-      userType: user.type,
       rfid: user.rfid,
     });
   } catch (error) {
