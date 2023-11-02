@@ -145,6 +145,43 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.post("/loginrfid", async (req, res) => {
+  const { rfid } = req.body;
+
+  try {
+    // Find the user by email
+    const user = await Users.findOne({ rfid });
+
+    if (!user) {
+      return res
+        .status(401)
+        .json({ message: "Authentication failed. User not found." });
+    }
+
+    // Create a JWT token
+    const token = jwt.sign({ userId: user._id }, "your-secret-key", {
+      expiresIn: "1h",
+    });
+
+    // Set the token as a cookie (optional)
+    res.cookie("jwt", token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
+
+    // Respond with the token as a Bearer token
+    res.status(200).json({
+      message: "Authentication successful",
+      token: `${token}`,
+      userId: user._id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      userType: user.type,
+      rfid: user.rfid,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 mongoose.set("strictQuery", false);
 mongoose
   .connect("mongodb+srv://capstone:Capstone2@cluster0.sqm4la8.mongodb.net/POMS")
