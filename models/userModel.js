@@ -4,7 +4,6 @@ const userSchema = mongoose.Schema(
   {
     rfid: {
       type: String,
-      required: [true, "Please enter rfid"],
     },
     firstname: {
       type: String,
