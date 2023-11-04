@@ -5,10 +5,10 @@ const Users = require("./models/userModel");
 const Products = require("./models/productModel");
 const Cart = require("./models/cartModel");
 const Order = require("./models/orderModel");
+const History = require("./models/historyModel");
 
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
-
 const app = express();
 
 app.use(cookieParser());
@@ -48,8 +48,16 @@ app.post("/checkout/:userid", async (req, res) => {
       createdAt: new Date(),
     });
 
+    const history = new History({
+      userid: cart.userid,
+      products: cart.products,
+      totalPrice: cart.totalPrice,
+      createdAt: new Date(),
+    });
+
     // Save the order data to the orders table
     await order.save();
+    await history.save();
 
     // Remove the cart
     await Cart.findOneAndRemove({ userid });
