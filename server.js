@@ -165,8 +165,12 @@ app.get("/cart/:userId", async (req, res) => {
     if (!cart) {
       return res.status(404).json({ message: "Cart not found" });
     }
+    const totalCount = cart.products.reduce(
+      (total, cartItem) => total + cartItem.quantity,
+      0
+    );
 
-    res.status(200).json(cart);
+    res.status(200).json({ cart, totalCount });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
