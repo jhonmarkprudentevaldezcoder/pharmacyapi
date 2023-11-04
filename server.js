@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const Users = require("./models/userModel");
 const Products = require("./models/productModel");
 const Cart = require("./models/cartModel");
+const Order = require("./models/orderModel");
 
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
@@ -28,6 +29,37 @@ app.get("/", (req, res) => {
 });
 
 //  products
+app.post("/checkout/:userid", async (req, res) => {
+  const { userid } = req.params;
+
+  try {
+    // Find the user's cart based on the user ID
+    const cart = await Cart.findOne({ userid });
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    // Create a new order based on the cart data
+    const order = new Order({
+      userid: cart.userid,
+      products: cart.products,
+      totalPrice: cart.totalPrice,
+      createdAt: new Date(),
+    });
+
+    // Save the order data to the orders table
+    await order.save();
+
+    // Remove the cart
+    await Cart.findOneAndRemove({ userid });
+
+    res.status(200).json({ message: "Checkout successful" });
+  } catch (error) {
+    console.error("Error during checkout:", error);
+    res.status(500).json({ message: "An error occurred during checkout" });
+  }
+});
 
 //add product
 app.post("/product", async (req, res) => {
