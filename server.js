@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const Users = require("./models/userModel");
 const Products = require("./models/productModel");
+const Cart = require("./models/cartModel");
 
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
@@ -97,6 +98,75 @@ app.post("/register", async (req, res) => {
 
     const user = await Users.create(req.body);
     res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Add a product to the cart
+app.post("/cart/add/:userId/:productId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { productId, quantity } = req.body;
+
+    if (
+      !productId ||
+      !quantity ||
+      typeof quantity !== "number" ||
+      quantity <= 0
+    ) {
+      return res.status(400).json({ message: "Invalid request data" });
+    }
+
+    const product = await Products.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const cart = await Cart.findOne({ userid: userId });
+
+    if (!cart) {
+      const newCart = new Cart({
+        userid: userId,
+        products: [{ productId, quantity }],
+        totalPrice: product.Price * quantity,
+      });
+      await newCart.save();
+    } else {
+      const existingItem = cart.products.find(
+        (item) => item.productId.toString() === productId
+      );
+
+      if (existingItem) {
+        existingItem.quantity += quantity;
+      } else {
+        cart.products.push({ productId, quantity });
+      }
+
+      cart.totalPrice += product.Price * quantity;
+      await cart.save();
+    }
+
+    res.status(201).json({ message: "Product added to cart", cart });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Get the user's cart
+app.get("/cart/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const cart = await Cart.findOne({ userid: userId }).populate(
+      "products.productId"
+    );
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    res.status(200).json(cart);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
