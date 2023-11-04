@@ -176,6 +176,44 @@ app.get("/cart/:userId", async (req, res) => {
   }
 });
 
+// Remove a product from the cart
+app.delete("/cart/remove/:userid/:productId", async (req, res) => {
+  try {
+    const { userid, productId } = req.params;
+
+    // Find the user's cart based on the user ID
+    const cart = await Cart.findOne({ userid });
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    // Find the index of the product to remove in the cart
+    const productIndex = cart.products.findIndex(
+      (product) => product.productId._id == productId
+    );
+
+    if (productIndex === -1) {
+      return res.status(404).json({ message: "Product not found in the cart" });
+    }
+
+    // Remove the product from the cart
+    cart.products.splice(productIndex, 1);
+
+    // Save the updated cart data
+    await cart.save();
+
+    res
+      .status(200)
+      .json({ message: "Product removed from the cart successfully" });
+  } catch (error) {
+    console.error("Error removing product from the cart:", error);
+    res.status(500).json({
+      message: "An error occurred while removing the product from the cart",
+    });
+  }
+});
+
 //login
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
