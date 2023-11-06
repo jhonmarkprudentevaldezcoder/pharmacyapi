@@ -38,6 +38,16 @@ app.get("/user/count", async (req, res) => {
   }
 });
 
+//get all members
+app.get("/user", async (req, res) => {
+  try {
+    const members = await Users.find({ rfid: { $exists: true } });
+    res.status(200).json(members);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //count order
 app.get("/order/count", async (req, res) => {
   try {
