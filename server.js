@@ -28,6 +28,16 @@ app.get("/", (req, res) => {
   res.send("API SUCCESS");
 });
 
+//count users
+app.get("/user/count", async (req, res) => {
+  try {
+    const userCount = await Users.countDocuments({});
+    res.status(200).json(userCount);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //  products
 app.post("/checkout/:userid", async (req, res) => {
   const { userid } = req.params;
