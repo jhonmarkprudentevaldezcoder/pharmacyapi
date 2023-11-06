@@ -59,7 +59,7 @@ app.post("/user", async (req, res) => {
   }
 });
 
-//search product by category
+//search members by rfid
 app.get("/user/:rfid", async (req, res) => {
   try {
     const { rfid } = req.params;
