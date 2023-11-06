@@ -63,15 +63,15 @@ app.post("/user", async (req, res) => {
 app.get("/user/:rfid", async (req, res) => {
   try {
     const { rfid } = req.params;
-    const product = await Products.find({ rfid: rfid });
+    const user = await Users.find({ rfid: rfid });
 
-    if (product.length === 0) {
+    if (user.length === 0) {
       return res
         .status(404)
         .json({ message: "No resreved id matching records found" });
     }
 
-    res.status(200).json(product);
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
