@@ -38,6 +38,16 @@ app.get("/user/count", async (req, res) => {
   }
 });
 
+//count order
+app.get("/order/count", async (req, res) => {
+  try {
+    const orderCount = await Order.countDocuments({});
+    res.status(200).json(orderCount);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //  products
 app.post("/checkout/:userid", async (req, res) => {
   const { userid } = req.params;
