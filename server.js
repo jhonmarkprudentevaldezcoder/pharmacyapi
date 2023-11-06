@@ -84,7 +84,8 @@ app.post("/product", async (req, res) => {
 app.get("/product", async (req, res) => {
   try {
     const products = await Products.find({});
-    res.status(200).json(products);
+    const productCount = await Products.countDocuments({});
+    res.status(200).json({ products, totalProducts: productCount });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
