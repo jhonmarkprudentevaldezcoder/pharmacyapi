@@ -48,6 +48,16 @@ app.get("/user", async (req, res) => {
   }
 });
 
+//get all orders
+app.get("/order", async (req, res) => {
+  try {
+    const orders = await Order.find({});
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //add members
 app.post("/user", async (req, res) => {
   try {
