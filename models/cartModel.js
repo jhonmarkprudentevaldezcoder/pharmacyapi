@@ -5,6 +5,9 @@ const productSchema = mongoose.Schema(
     userid: {
       type: String,
     },
+    userContact: {
+      type: String,
+    },
     products: [
       {
         userEmail: {

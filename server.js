@@ -285,6 +285,7 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
     if (!cart) {
       const newCart = new Cart({
         userid: userId,
+        userContact: user.contact,
         products: [
           {
             Orderstatus: "NO DELIVERED",
@@ -308,6 +309,7 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
       } else {
         cart.products.push({
           userEmail: user.email,
+          userContact: user.contact,
           productId,
           quantity,
           Orderstatus: "NOT DELIVERED",
