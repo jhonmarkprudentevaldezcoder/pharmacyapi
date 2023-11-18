@@ -303,7 +303,12 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
       if (existingItem) {
         existingItem.quantity += quantity;
       } else {
-        cart.products.push({ productId, quantity });
+        cart.products.push({
+          productId,
+          quantity,
+          productName: product.Name,
+          totalPrice: product.Price * quantity,
+        });
       }
 
       cart.totalPrice += product.Price * quantity;
