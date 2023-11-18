@@ -274,6 +274,7 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
     }
 
     const product = await Products.findById(productId);
+    const user = await Users.findById(userId);
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
@@ -286,7 +287,7 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
         userid: userId,
         products: [
           {
-            userEmail: Users.email,
+            userEmail: user.email,
             productId,
             quantity,
             productName: product.Name,
@@ -305,7 +306,7 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
         existingItem.quantity += quantity;
       } else {
         cart.products.push({
-          userEmail: Users.email,
+          userEmail: user.email,
           productId,
           quantity,
           productName: product.Name,
