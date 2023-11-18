@@ -7,6 +7,9 @@ const orderSchema = mongoose.Schema(
     },
     products: [
       {
+        userEmail: {
+          type: String,
+        },
         productId: {
           type: mongoose.Schema.Types.ObjectId, // Assuming you have a Product model
           ref: "products",

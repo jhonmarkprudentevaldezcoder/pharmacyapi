@@ -286,6 +286,7 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
         userid: userId,
         products: [
           {
+            userEmail: Users.email,
             productId,
             quantity,
             productName: product.Name,
@@ -304,6 +305,7 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
         existingItem.quantity += quantity;
       } else {
         cart.products.push({
+          userEmail: Users.email,
           productId,
           quantity,
           productName: product.Name,
