@@ -287,6 +287,7 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
         userid: userId,
         products: [
           {
+            Orderstatus,
             userEmail: user.email,
             productId,
             quantity,
@@ -309,6 +310,7 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
           userEmail: user.email,
           productId,
           quantity,
+          Orderstatus,
           productName: product.Name,
           totalPrice: product.Price * quantity,
         });

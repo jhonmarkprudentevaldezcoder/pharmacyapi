@@ -18,6 +18,10 @@ const productSchema = mongoose.Schema(
           type: Number,
           default: 1, // You can set a default value if needed
         },
+        Orderstatus: {
+          type: String,
+          default: "NOT DELIVERED", // You can set a default value if needed
+        },
         productName: {
           type: String,
         },
