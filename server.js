@@ -157,7 +157,7 @@ app.put("/user/shipped/:id", async (req, res) => {
 app.get("/order/count", async (req, res) => {
   try {
     const orderCount = await Order.countDocuments({
-      Orderstatus: { $ne: "NO DELIVERED" },
+      Orderstatus: "NO DELIVERED",
     });
     res.status(200).json(orderCount);
   } catch (error) {
