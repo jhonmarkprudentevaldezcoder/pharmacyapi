@@ -15,6 +15,10 @@ const productSchema = mongoose.Schema(
           type: Number,
           default: 1, // You can set a default value if needed
         },
+        Name: {
+          type: String,
+          ref: "products",
+        },
       },
     ],
     totalPrice: {
