@@ -284,7 +284,14 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
     if (!cart) {
       const newCart = new Cart({
         userid: userId,
-        products: [{ productId, quantity, productName: product.Name }],
+        products: [
+          {
+            productId,
+            quantity,
+            productName: product.Name,
+            totalPrice: product.Price * quantity,
+          },
+        ],
         totalPrice: product.Price * quantity,
       });
       await newCart.save();
