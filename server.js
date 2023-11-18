@@ -309,7 +309,6 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
       } else {
         cart.products.push({
           userEmail: user.email,
-          userContact: user.contact,
           productId,
           quantity,
           Orderstatus: "NOT DELIVERED",
