@@ -123,6 +123,36 @@ app.put("/user/:id", async (req, res) => {
   }
 });
 
+app.put("/user/shipped/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const Orderstatus = "DELIVERED"; // Directly assign the value
+
+    // Ensure that orderStatus is provided in the request body
+    if (!Orderstatus) {
+      return res
+        .status(400)
+        .json({ message: "OrderStatus is required in the request body" });
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      id,
+      { $set: { Orderstatus } },
+      { new: true } // Returns the updated document
+    );
+
+    if (!order) {
+      return res
+        .status(404)
+        .json({ message: `Cannot find any Order with ID ${id}` });
+    }
+
+    res.status(200).json(order);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //count order
 app.get("/order/count", async (req, res) => {
   try {
@@ -149,6 +179,7 @@ app.post("/checkout/:userid", async (req, res) => {
     const order = new Order({
       userid: cart.userid,
       products: cart.products,
+      Orderstatus: cart.Orderstatus,
       userContact: cart.userContact,
       totalPrice: cart.totalPrice,
       createdAt: new Date(),
@@ -156,6 +187,7 @@ app.post("/checkout/:userid", async (req, res) => {
 
     const history = new History({
       userid: cart.userid,
+      Orderstatus: cart.Orderstatus,
       userContact: cart.userContact,
       products: cart.products,
       totalPrice: cart.totalPrice,
@@ -288,6 +320,7 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
       const newCart = new Cart({
         userid: userId,
         userContact: user.contact,
+        Orderstatus: "NO DELIVERED",
         products: [
           {
             Orderstatus: "NO DELIVERED",

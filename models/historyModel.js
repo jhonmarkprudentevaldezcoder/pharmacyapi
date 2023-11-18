@@ -8,6 +8,10 @@ const historySchema = mongoose.Schema(
     userContact: {
       type: String,
     },
+    Orderstatus: {
+      type: String,
+      default: "NOT DELIVERED", // You can set a default value if needed
+    },
     products: [
       {
         userEmail: {
