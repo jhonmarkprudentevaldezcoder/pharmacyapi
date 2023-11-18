@@ -87,6 +87,24 @@ app.get("/user/:rfid", async (req, res) => {
   }
 });
 
+//search user by id
+app.get("/user/orders/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await Users.find({ _id: id });
+
+    if (user.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No resreved id matching records found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //update product
 app.put("/user/:id", async (req, res) => {
   try {
