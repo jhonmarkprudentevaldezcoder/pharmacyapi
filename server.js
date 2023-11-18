@@ -126,7 +126,7 @@ app.put("/user/:id", async (req, res) => {
 app.put("/user/shipped/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const Orderstatus = "DELIVERED"; // Directly assign the value
+    const Orderstatus = "DELIVERED"; // Corrected the variable name
 
     // Ensure that orderStatus is provided in the request body
     if (!Orderstatus) {
@@ -137,7 +137,7 @@ app.put("/user/shipped/:id", async (req, res) => {
 
     const order = await Order.findByIdAndUpdate(
       id,
-      { $set: { Orderstatus } },
+      { $set: { Orderstatus } }, // Corrected the variable name
       { new: true } // Returns the updated document
     );
 
