@@ -288,6 +288,7 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
         userContact: user.contact,
         products: [
           {
+            userContact: user.contact,
             Orderstatus: "NO DELIVERED",
             userEmail: user.email,
             productId,
