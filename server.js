@@ -149,12 +149,14 @@ app.post("/checkout/:userid", async (req, res) => {
     const order = new Order({
       userid: cart.userid,
       products: cart.products,
+      userContact: user.contact,
       totalPrice: cart.totalPrice,
       createdAt: new Date(),
     });
 
     const history = new History({
       userid: cart.userid,
+      userContact: user.contact,
       products: cart.products,
       totalPrice: cart.totalPrice,
       createdAt: new Date(),
