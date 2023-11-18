@@ -310,7 +310,7 @@ app.post("/cart/add/:userId/:productId", async (req, res) => {
           userEmail: user.email,
           productId,
           quantity,
-          Orderstatus: "NO DELIVERED",
+          Orderstatus: "NOT DELIVERED",
           productName: product.Name,
           totalPrice: product.Price * quantity,
         });
