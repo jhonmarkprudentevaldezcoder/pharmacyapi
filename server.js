@@ -386,6 +386,27 @@ app.get("/cart/:userId", async (req, res) => {
   }
 });
 
+app.get("/history/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const history = await History.findOne({ userid: userId }).populate(
+      "products.productId"
+    );
+
+    if (!history) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+    const totalCount = cart.products.reduce(
+      (total, cartItem) => total + cartItem.quantity,
+      0
+    );
+
+    res.status(200).json({ history, totalCount });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Remove a product from the cart
 app.delete("/cart/remove/:userid/:productId", async (req, res) => {
   try {
