@@ -396,7 +396,7 @@ app.get("/history/:userId", async (req, res) => {
     if (!history) {
       return res.status(404).json({ message: "Cart not found" });
     }
-    const totalCount = cart.products.reduce(
+    const totalCount = history.products.reduce(
       (total, cartItem) => total + cartItem.quantity,
       0
     );
