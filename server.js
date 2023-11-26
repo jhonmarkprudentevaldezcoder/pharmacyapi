@@ -389,14 +389,14 @@ app.get("/cart/:userId", async (req, res) => {
 app.get("/history/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-    const history = await History.findOne({ userid: userId }).populate(
+    const history = await Order.findOne({ userid: userId }).populate(
       "products.productId"
     );
 
     if (!history) {
-      return res.status(404).json({ message: "Historyy not found" });
+      return res.status(404).json({ message: "Cart not found" });
     }
-    const totalCount = Order.products.reduce(
+    const totalCount = history.products.reduce(
       (total, cartItem) => total + cartItem.quantity,
       0
     );
