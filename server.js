@@ -210,6 +210,24 @@ app.post("/checkout/:userid", async (req, res) => {
   }
 });
 
+// List all user contact numbers
+app.get("/userContactNumbers", async (req, res) => {
+  try {
+    const users = await Cart.find();
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    // Extract contact numbers from users
+    const contactNumbers = users.map((user) => user.userContact);
+
+    res.status(200).json(contactNumbers);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //add product
 app.post("/product", async (req, res) => {
   try {
