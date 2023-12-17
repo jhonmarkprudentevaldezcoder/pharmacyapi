@@ -228,6 +228,27 @@ app.get("/userContactNumbers", async (req, res) => {
   }
 });
 
+// Search for a userContact
+app.get("/userContactNumbers/:searchTerm", async (req, res) => {
+  try {
+    const { searchTerm } = req.params;
+    const users = await Cart.find({ userContact: new RegExp(searchTerm, "i") });
+
+    if (users.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No users found matching the search term" });
+    }
+
+    // Extract contact numbers from users
+    const contactNumbers = users.map((user) => user.userContact);
+
+    res.status(200).json(contactNumbers);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //add product
 app.post("/product", async (req, res) => {
   try {
