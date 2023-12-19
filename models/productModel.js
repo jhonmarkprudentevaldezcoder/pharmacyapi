@@ -14,7 +14,7 @@ const productSchema = mongoose.Schema(
         validator: function (value) {
           return value >= 0; // Check if the value is greater than or equal to 0
         },
-        message: "Price must be greater than or equal to 0",
+        message: "invalid price",
       },
     },
     Stock: {
@@ -23,7 +23,7 @@ const productSchema = mongoose.Schema(
         validator: function (value) {
           return value >= 0; // Check if the value is greater than or equal to 0
         },
-        message: "Stock must be greater than or equal to 0",
+        message: "invalid stock",
       },
     },
     Image: {
