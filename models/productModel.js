@@ -9,7 +9,7 @@ const productSchema = mongoose.Schema(
       type: String,
     },
     Price: {
-      type: Number,
+      type: String,
       validate: {
         validator: function (value) {
           return value >= 0; // Check if the value is greater than or equal to 0
@@ -18,7 +18,7 @@ const productSchema = mongoose.Schema(
       },
     },
     Stock: {
-      type: Number,
+      type: String,
       validate: {
         validator: function (value) {
           return value >= 0; // Check if the value is greater than or equal to 0
