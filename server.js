@@ -6,6 +6,8 @@ const Products = require("./models/productModel");
 const Cart = require("./models/cartModel");
 const Order = require("./models/orderModel");
 const History = require("./models/historyModel");
+const Prescribed = require("./models/prescribedModel");
+
 
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
